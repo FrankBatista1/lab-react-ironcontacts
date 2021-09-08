@@ -2,14 +2,37 @@ import "./App.css";
 import contacts from './contacts.json'
 import { useState } from 'react'
 
+const filteredContacts = contacts.filter((contact,index) => {
+  return index < 5
+})
+
 function App() {
-  const [contact, stateContact] = useState(contacts)
-  const filteredContacts = contact.filter((contact,index) => {
-    return index < 5
-  })
+  const [state, setState] = useState(filteredContacts)
+  
+  const newContcat = contacts[10]
+
+  const addRandomContact = () => {
+    const newArrayOfContacts = filteredContacts.push(newContcat)
+    return setState(newArrayOfContacts);
+  }
+  
+  const sortTheContactsAlfabetically = () => {
+    const newArray = filteredContacts.sort((a,b) => a.popularity - b.popularity)
+    return setState(newArray)
+  }
+
+  const removeContacs = () => {
+    return 1
+  }
+
+  console.log(state)
+  
   return (
     <div className="App">
     <header>IronContacts</header>
+    <button onClick={addRandomContact}>Add a random contact</button>
+    <button onClick={sortTheContactsAlfabetically}>Order Alfabetically</button>
+    <button onClick={removeContacs}>Remove contact</button>
       <table>
         <tr>
           <th>Picture</th>
@@ -18,32 +41,20 @@ function App() {
           <th>Won an Oscar</th>
           <th>Won an Emmy</th>
         </tr>
-        <tr>
-          <td><img style= {{width: 100}} src={contact[0].pictureUrl}></img></td>
-          <td>{contact[0].name}</td>
-          <td>{contact[0].popularity}</td>
-        </tr>
-        <tr>
-          <td><img style= {{width: 100}} src={contact[1].pictureUrl}></img></td>
-          <td>{contact[1].name}</td>
-          <td>{contact[1].popularity}</td>
-        </tr>
-        <tr>
-          <td><img style= {{width: 100}} src={contact[2].pictureUrl}></img></td>
-          <td>{contact[2].name}</td>
-          <td>{contact[2].popularity}</td>
-        </tr>
-        <tr>
-          <td><img style= {{width: 100}} src={contact[3].pictureUrl}></img></td>
-          <td>{contact[3].name}</td>
-          <td>{contact[3].popularity}</td>
-        </tr>
-        <tr>
-          <td><img style= {{width: 100}} src={contact[4].pictureUrl}></img></td>
-          <td>{contact[4].name}</td>
-          <td>{contact[4].popularity}</td>
-        </tr>
-      </table>
+        {state.map((contact) => {
+          return (
+            <tr>
+              <td><img style= {{width: 100}} src={contact.pictureUrl}></img></td>
+              <td>{contact.name}</td>
+              <td>{contact.popularity}</td>
+              <td>{contact.wonOscar ? 'Won Oscar' : 'No oscar'}</td>
+              <td>{contact.wonEmmy ? 'Won Emmy' : 'No Emmy'}</td>
+            </tr>
+          )
+        })}
+
+
+       </table>
     </div>
   )
 }
